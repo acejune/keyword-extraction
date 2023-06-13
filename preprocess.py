@@ -115,21 +115,21 @@ def get_preprocessed_paper_text(text):
 
 def get_preprocessed_true_keyword(keyword_list):
     result = []
-    for keyword in keyword_list:
-        keyword = change_to_lowercase(keyword)
-        keyword = remove_stopword(keyword)
-        keyword = lemmatize(keyword)
-        result.append(keyword)
-    return result
+    if isinstance(keyword_list, list):
+        for keyword in keyword_list:
+            keyword = change_to_lowercase(keyword)
+            keyword = remove_stopword(keyword)
+            keyword = lemmatize(keyword)
+            result.append(keyword)
+        return result
+    else:
+        return None
 
 
 def preprocess_data(dir_path, file_name):
-    LOGGER.info("[ Data preprocessing ] start")
+    LOGGER.info("[ Data preprocessing ] Start")
 
     df = pd.read_csv(osp.join(dir_path, f"{file_name}.csv"))
-
-    # Test set
-    df = df.dropna()
 
     df["true_keyword"] = df["true_keyword"].str.split(",")
 
@@ -143,11 +143,8 @@ def preprocess_data(dir_path, file_name):
         df.at[row.Index, "ppd_title"] = get_preprocessed_paper_text(row.title)
         df.at[row.Index, "ppd_abstract"] = get_preprocessed_paper_text(row.abstract)
 
-    # 빈 값 처리
-    df = df.fillna(" ")
-
     # Save dataframe
     save_path = osp.join(dir_path, f"{file_name}_preprocessed.csv")
     df.to_csv(save_path, index=False, encoding="utf-8-sig")
 
-    LOGGER.info("[ Data preprocessing ] complete")
+    LOGGER.info("[ Data preprocessing ] Complete")

@@ -17,7 +17,13 @@ conda env create -f environment.yaml
 ## Usage
 
 ```
-python run.py --dir_path _dataset --load_fn sample_data --method keybert_ngram keybert rake textrank tfidf yake
+python run.py --dir_path _dataset --load_fn sample_data --method keybert_ngram keybert rake textrank tfidf yake --eval
+```
+
+or
+
+```
+python run.py --dir_path _dataset --load_fn sample_data --method keybert_ngram keybert rake textrank tfidf yake --no-eval
 ```
 
 ## Issue
